@@ -1,0 +1,65 @@
+<menu>
+		<category name="Pizzas">
+			<price name="Small">6.85</price>
+			<price name="Large">10.85</price>
+			<item name="Pepperoni"></item>
+			<item name="Onions"></item>
+			<item name="Peppers"></item>
+			<item name="Broccoli"></item>
+			<item name="Fresh Garlic"></item>
+			<item name="Mushrooms"></item>
+			<item name="Fresh Spinach"></item>
+			<item name="Anchovies"></item>
+			<item name="Hamburg"></item>
+			<item name="Sausage"></item>
+			<item name="Meatball"></item>
+			<item name="Bacon"></item>
+			<item name="Ham"></item>
+			<item name="Olives"></item>
+			<item name="Grilled Chicken"></item>
+			<item name="Hawaiian"></item>
+			<item name="Tomato &amp; Cheese">
+				<price name="Small">5.50</price>
+				<price name="Large">9.75</price>
+			</item>
+			<addition name="Extra Cheese">
+				<price name="Small">1.25</price>
+				<price name="Large">1.85</price>
+			</addition>
+			<addition name="Extra Pepper">
+				<price name="Small">1.25</price>
+				<price name="Large">1.85</price>
+			</addition>
+		</category>
+		<category name="Speciality Pizzas">
+			<price name="Small">9.80</price>
+			<price name="Large">15.80</price>
+			<item name="Three Aces Special"></item>
+			<item name="Mediterranean">Sliced Tomatoes, Olives, Spinach, Fresh Garlic, Mozzarella &amp; Feta Cheese</item>
+			
+		</category>
+		<category name="Special Dinnerrs">
+			<price>7.25</price>
+		</category>
+		<category name="Side Orders">
+			<price name="Small">9.80</price>
+			<price name="Large">15.80</price>
+		</category>
+		<category name="Salads">
+			<price name="Small">9.80</price>
+			<price name="Large">15.80</price>
+		</category>
+		<category name="Pasta">
+			<price>7.25</price>
+		</category>
+		<category name="Homemade Calzones">
+			<price>7.35</price>
+		</category>
+		<category name="Wraps $4.95">
+			<price>4.95</price>
+		</category>
+		<category name="Grinders">
+			<price name="Small">4.75</price>
+			<price name="Large">5.75</price>
+		</category>
+	</menu>
