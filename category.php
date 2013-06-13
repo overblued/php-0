@@ -12,6 +12,9 @@
 		}
 		header("Location: category.php?c=".$_SESSION["cid"]);
 	}
+	$items = $menu->xpath("//category[$cid]/item");
+	$additions = $menu->xpath("//category[$cid]/addition");
+
 ?>
 <?php require_once("head.php"); ?>
 <!--category-->
@@ -22,13 +25,18 @@
 		<?php
 			$index = 1;
 			foreach ($menu->children() as $c){
-				echo "<tr><td><a margin='1.3em 0' href='category.php?c=".strval($index)."'>".$c["name"]."</a></td><td>";
-				if ($cid == $index){
-					echo "---";
-				}else{
-					echo ">>";
-				}
-				echo "</td></tr>";
+		?>
+			<tr>
+				<td>
+					<a margin="1.3em 0" href="category.php?c=<?php echo $index;?>">
+						<?php echo $c["name"];?>
+					</a>
+				</td>
+				<td>
+					<?php $cid == $index ? print("---") : print(">>");?>
+				</td>
+			</tr>
+		<?php
 				$index += 1;
 			};
 		?>
@@ -37,34 +45,30 @@
 	<!--show items in category-->
 	<fieldset>
 		<legend>
-			<?php
-				echo $menu->xpath("//category[$cid]")[0]["name"];
-			?>
+			<?php echo $menu->xpath("//category[$cid]")[0]["name"];?>
 		</legend>
 		<div>
 			<form action="category.php" method="get">
 				<input type="hidden" name="c" value="<?php echo $cid;?>" />
 			<?php
-				$items = $menu->xpath("//category[$cid]/item");
-				$additions = $menu->xpath("//category[$cid]/addition");
-				$index=1;
+				$index = 1;
 				foreach ($items as $item){
-					echo "<button class='item' type='submit' name='i' value='".$index."'>".$item["name"]."</button>";
+			?>
+				<button class="item" type="submit" name="i" value="<?php echo $index;?>">
+					<?php echo $item["name"];?>
+				</button>
+			<?php
 					$index += 1;
 				}
 			?>
 			</form>
 			<?php if (isset($_GET["i"])) { ?>
 			<hr />
-			<form >
+			<form>
 				<tr>
 					<th>Your Choice</th>
 				</tr>
-
 			</form>
-
-
-
 			<?php } ?>
 		</div>
 	</fieldset>
