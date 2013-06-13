@@ -1,0 +1,54 @@
+/* 
+    Document   : main
+    Created on : 2013-6-13, 15:47:49
+    Author     : Daxue
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+a {
+	color: blue;
+	font-family:Georgia,serif;
+	outline-color:lightseagreen;
+	text-decoration: none;
+}
+a:hover {
+	color:lightseagreen;
+}
+div {
+	overflow: auto;
+}
+fieldset {
+	border:2px solid lightgrey;
+	padding:0.5em;
+}
+header {
+	text-align: center;
+}
+hr {
+	border:1px solid lightgrey;
+}
+h1 {
+	font-family:Cambria;
+}
+legend {
+	font-family:Verdana,arial,sans-serif;
+}
+nav {
+	padding:0 0 1em 0;
+}
+table {
+	font-family:arial;
+}
+.item {
+	margin:0.3em;
+	font-family:arial,sans-serif;
+	background:#DAE0EF;
+	border:2px solid lightgrey;
+}
+#category {
+	float:left;
+}
