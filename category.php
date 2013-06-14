@@ -13,6 +13,18 @@
 		header("Location: category.php?c=".$_SESSION["cid"]);
 	}
 	$items = $menu->xpath("//category[$cid]/item");
+	if (isset($_GET["i"])){
+		if ($_GET["i"] > count($items) || $_GET["i"] < 1){
+			header("Location: category.php?c=".$_SESSION["cid"]);
+		}else{
+			$iid = $_GET["i"];
+			$item = $menu->xpath("//category[$cid]/item[$iid]")[0];
+			$prices = $menu->xpath("//category[$cid]/item[$iid]/price");
+			if (!count($prices)){
+				$prices = $menu->xpath("//category[$cid]/price");
+			}
+		}
+	}
 	$additions = $menu->xpath("//category[$cid]/addition");
 
 ?>
@@ -24,7 +36,7 @@
 		<table>
 		<?php
 			$index = 1;
-			foreach ($menu->children() as $c){
+			foreach ($menu->category as $c){
 		?>
 			<tr>
 				<td>
@@ -48,29 +60,52 @@
 			<?php echo $menu->xpath("//category[$cid]")[0]["name"];?>
 		</legend>
 		<div>
-			<form action="category.php" method="get">
-				<input type="hidden" name="c" value="<?php echo $cid;?>" />
-			<?php
-				$index = 1;
-				foreach ($items as $item){
-			?>
-				<button class="item" type="submit" name="i" value="<?php echo $index;?>">
-					<?php echo $item["name"];?>
-				</button>
-			<?php
-					$index += 1;
-				}
-			?>
-			</form>
-			<?php if (isset($_GET["i"])) { ?>
-			<hr />
-			<form>
-				<tr>
-					<th>Your Choice</th>
-				</tr>
-			</form>
-			<?php } ?>
+		<?php
+			$index = 1;
+			foreach ($items as $i){
+		?>
+			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;i=<?php echo $index;?>">
+					<?php echo $i["name"];?>
+			</a>
+		<?php
+				$index += 1;
+			}
+		?>
 		</div>
+		<?php if (isset($_GET["i"])) { ?>
+		<hr />
+		<table>
+			<tr>
+				<th>Your Choice</th>
+			<?php foreach ($prices as $p){ ?>
+				<th><?php echo $p["name"];?></th>
+			<?php } ?>
+			<?php if (count($additions)){ ?>
+				<th>Extra</th>
+			<?php }?>
+			</tr>
+			<tr>
+				<form action="add2cart.php" method="post">
+					<td><?php echo $item["name"];?></td>
+					<?php
+						$index = 1;
+						foreach ($prices as $price){
+					?>
+					<td class="choosing">
+						<?php echo $price; ?>
+						<input type="radio" name="size" value="<?php echo $price["name"]; ?>"
+								 <?php $index == 1 ? print("checked") : print(""); ?>
+						/>
+					</td>
+					<?php 
+							$index += 1;
+						}
+					?>
+					
+				</form>
+			</tr>
+			<?php } ?>
+		</table>
 	</fieldset>
 </div>
 <pre>
@@ -81,6 +116,15 @@
 		print_r($_POST);
 		echo "get:<br />";
 		print_r($_GET);
+		echo "<br />";
+
+
+		print_r($item[0]);
+		if ($item["price"]){
+			echo "yes";
+		}else{
+			echo "no";
+		}
 	?>
 </pre>
 <?php require_once("tail.php"); ?>

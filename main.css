@@ -11,7 +11,8 @@ root {
 }
 a {
 	color: blue;
-	font-family:Georgia,serif;
+/*	font-family:Georgia,serif;*/
+	font-family:Verdana,arial,sans-serif;
 	outline-color:lightseagreen;
 	text-decoration: none;
 }
@@ -25,29 +26,43 @@ fieldset {
 	border:2px solid lightgrey;
 	padding:0.5em;
 }
+form {
+	font-family:arial,sans-serif;
+}
 header {
 	text-align: center;
 }
 hr {
+	clear:left;
 	border:1px solid lightgrey;
 }
 h1 {
 	font-family:Cambria;
 }
 legend {
-	font-family:Verdana,arial,sans-serif;
+/*	font-family:Verdana,arial,sans-serif;*/
+	font-family:Georgia,serif;
 }
 nav {
 	padding:0 0 1em 0;
 }
 table {
-	font-family:arial;
+	font-family:arial,sans-serif;;
 }
+
+/*child of a*/
 .item {
-	margin:0.3em;
-	font-family:arial,sans-serif;
-	background:#DAE0EF;
+	float:left;
+	background:#E6E6FF;
 	border:2px solid lightgrey;
+	color: black;
+	margin:0.3em 0.3em;
+	font-family:arial,sans-serif;
+	outline-color:lightseagreen;
+	padding:0.1em 0.3em;
+}
+.choosing {
+	padding:0em 1em;
 }
 #category {
 	float:left;
