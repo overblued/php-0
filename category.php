@@ -1,31 +1,36 @@
 <?php
 	session_start();
 	$menu = new SimpleXMLElement(file_get_contents("menu.xml"));
-//	avoid invalid category
-//	remember current category, so we can get back to it;
-	if (isset($_GET["c"]) && $_GET["c"] <= $menu->category->count() && $_GET["c"] > 0){
-		$cid = $_GET["c"];
-		$_SESSION["cid"]=$cid;
-	}else{
+//------------sanity check--------------------
+	if ( ! isset($_GET["c"]) || ($_GET["c"] > $menu->category->count() || $_GET["c"] < 1)){
 		if ( ! isset($_SESSION["cid"])){
 			$_SESSION["cid"]=1;
 		}
 		header("Location: category.php?c=".$_SESSION["cid"]);
 	}
-	$items = $menu->xpath("//category[$cid]/item");
+	$cid = $_GET["c"];
+	$_SESSION["cid"] = $cid;
+	$cPrices = $menu->xpath("//category[$cid]/price");
+	$cItems = $menu->xpath("//category[$cid]/item");
+	$cNote = $menu->xpath("//category[$cid]/note");
+	$cExtras = $menu->xpath("//category[$cid]/extra");
+	$cCombo = $menu->xpath("//category[$cid]/combo");
 	if (isset($_GET["i"])){
-		if ($_GET["i"] > count($items) || $_GET["i"] < 1){
-			header("Location: category.php?c=".$_SESSION["cid"]);
-		}else{
-			$iid = $_GET["i"];
-			$item = $menu->xpath("//category[$cid]/item[$iid]")[0];
-			$prices = $menu->xpath("//category[$cid]/item[$iid]/price");
-			if (!count($prices)){
-				$prices = $menu->xpath("//category[$cid]/price");
+		if ($_GET["i"] > count($cItems) || $_GET["i"] < 1){
+			if ( ! isset($_SESSION["iid"])){
+				$_SESSION["iid"]=1;
 			}
+			header("Location: category.php?c=".$_SESSION["cid"]."&i=".$_SESSION["iid"]);
+		}
+		$iid = $_GET["i"];
+		$_SESSION["iid"] = $iid;
+		$iItem = $cItems[$iid-1];
+		$iPrices = $iItem->price;
+		if (!count($iPrices)){
+			$iPrices = $cPrices;
 		}
 	}
-	$additions = $menu->xpath("//category[$cid]/addition");
+	$extras = $menu->xpath("//category[$cid]/extra");
 
 ?>
 <?php require_once("head.php"); ?>
@@ -40,7 +45,7 @@
 		?>
 			<tr>
 				<td>
-					<a margin="1.3em 0" href="category.php?c=<?php echo $index;?>">
+					<a href="category.php?c=<?php echo $index;?>">
 						<?php echo $c["name"];?>
 					</a>
 				</td>
@@ -59,41 +64,84 @@
 		<legend>
 			<?php echo $menu->xpath("//category[$cid]")[0]["name"];?>
 		</legend>
+<!-------------------------------------show NOTE under category if it has one--------------------------------------------->
+		<?php if (count($cNote)){?>
+		<p class="note"><?php echo "--- $cNote[0] ---";?></p>
+		<?php }?>
+<!-------------------------------------------display items--------------------------------------------->
 		<div>
 		<?php
 			$index = 1;
-			foreach ($items as $i){
+			foreach ($cItems as $i){
 		?>
-			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;i=<?php echo $index;?>">
-					<?php echo $i["name"];?>
+
+			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;i=<?php echo $index;?>"
+			<?php if ($i->note) echo 'title="* '.$i->note.'"';?>>
+	<!-------------show tooltip if the item has a note------------------>
+			<?php
+				echo $i["name"];
+				if ($i->note) echo " *";
+			?>
+	<!----------------show price--------------------->
+			<?php  ($i->price[0])? $prices = $i->price : $prices = $cPrices;?>
+				<div class="price">
+				<?php
+					$j = 1;
+					foreach ($prices as $p){
+						echo $p;
+						if (count($prices) > $j){
+							echo "/";
+						}
+						$j += 1;
+					}
+				?>
+				</div>
 			</a>
 		<?php
 				$index += 1;
 			}
 		?>
 		</div>
-		<?php if (isset($_GET["i"])) { ?>
+<!-------------------------------------show combo------------------------------------------>
+		<?php if ($cCombo) { ?>
 		<hr />
+			<?php
+				$index = 1;
+				foreach ($cCombo as $c){
+			?>
+			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;o=<?php echo $index;?>">
+				<?php echo $c["name"];?>
+			</a>
+			<?php
+					$index += 1;
+				}
+			}
+		?>
+<!------------------------------show only after selected one item----------------------------------->
+		<?php if (isset($iItem)) { ?>
+		<hr />
+		
+	<!----------------1st row title--------------------->
 		<table>
 			<tr>
-				<th>Your Choice</th>
-			<?php foreach ($prices as $p){ ?>
-				<th><?php echo $p["name"];?></th>
-			<?php } ?>
-			<?php if (count($additions)){ ?>
-				<th>Extra</th>
-			<?php }?>
+				<th><?php echo $iItem["name"];?></th>
+				<?php if ($iItem->note) { ?>
+				<td class="note"><?php echo ": ".$iItem->note;?></td>
+				<?php } ?>
 			</tr>
-			<tr>
-				<form action="add2cart.php" method="post">
-					<td><?php echo $item["name"];?></td>
+		</table>
+	<!----------------2nd row --------------------->
+		<table>
+			<form action="add2cart.php" method="post">
+				<tr>
+		<!-------------- size  ------------->
 					<?php
 						$index = 1;
-						foreach ($prices as $price){
+						foreach ($iPrices as $p){
 					?>
 					<td class="choosing">
-						<?php echo $price; ?>
-						<input type="radio" name="size" value="<?php echo $price["name"]; ?>"
+						<?php echo $p["name"]; ?>
+						<input type="radio" name="price" value="<?php echo $index; ?>"
 								 <?php $index == 1 ? print("checked") : print(""); ?>
 						/>
 					</td>
@@ -101,11 +149,27 @@
 							$index += 1;
 						}
 					?>
-					
-				</form>
-			</tr>
-			<?php } ?>
+		<!-------------- extra------------->
+					<?php
+						if ($cExtras){
+							$index = 1;
+							foreach ($cExtras as $e){
+					?>
+					<td class="choosing">
+						<?php echo $e["name"]; ?>
+						<input type="checkbox" name="extra" value="<?php echo $index; ?>" />
+					</td>
+					<?php
+								$index += 1;
+							}
+						}
+					?>
+				</tr>
+			</form>
+	<!----------------3rd row note--------------------->
+
 		</table>
+		<?php } ?>
 	</fieldset>
 </div>
 <pre>
@@ -119,8 +183,8 @@
 		echo "<br />";
 
 
-		print_r($item[0]);
-		if ($item["price"]){
+		print_r($cNote);
+		if ($iItem["price"]){
 			echo "yes";
 		}else{
 			echo "no";

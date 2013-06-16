@@ -35,6 +35,7 @@ header {
 hr {
 	clear:left;
 	border:1px solid lightgrey;
+	margin: 1em 0 0 0;
 }
 h1 {
 	font-family:Cambria;
@@ -46,8 +47,9 @@ legend {
 nav {
 	padding:0 0 1em 0;
 }
+
 table {
-	font-family:arial,sans-serif;;
+	font-family:arial,sans-serif;
 }
 
 /*child of a*/
@@ -58,11 +60,25 @@ table {
 	color: black;
 	margin:0.3em 0.3em;
 	font-family:arial,sans-serif;
+	font-weight: bold;
 	outline-color:lightseagreen;
-	padding:0.1em 0.3em;
+	padding:0.2em 0.4em;
+	text-align: center;
 }
 .choosing {
+	border: 1px;
 	padding:0em 1em;
+}
+.price {
+	color: grey;
+	font-size: 0.8em;
+	font-weight: normal;
+}
+.note {
+	font-family: arial,sans-serif;
+	font-size: 0.9em;
+	margin: 0;
+	text-align: center;
 }
 #category {
 	float:left;
