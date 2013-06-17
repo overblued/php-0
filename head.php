@@ -9,8 +9,8 @@
 		<header>
 			<h1>Three Aces</h1>
 			<nav>
-				<a href="category.php">MENU</a> |
-				<a href="index.php">SHOPPING CART</a> |
+				<a href="selector.php">MENU</a> |
+				<a href="cart.php">SHOPPING CART</a> |
 				<a href="index.php">CONTACT US</a>
 			</nav>
 		</header>

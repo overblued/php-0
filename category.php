@@ -1,82 +1,58 @@
 <?php
-	session_start();
-	$menu = new SimpleXMLElement(file_get_contents("menu.xml"));
-//------------sanity check--------------------
-	if ( ! isset($_GET["c"]) || ($_GET["c"] > $menu->category->count() || $_GET["c"] < 1)){
-		if ( ! isset($_SESSION["cid"])){
-			$_SESSION["cid"]=1;
-		}
-		header("Location: category.php?c=".$_SESSION["cid"]);
-	}
-	$cid = $_GET["c"];
-	$_SESSION["cid"] = $cid;
-	$cPrices = $menu->xpath("//category[$cid]/price");
-	$cItems = $menu->xpath("//category[$cid]/item");
-	$cNote = $menu->xpath("//category[$cid]/note");
-	$cExtras = $menu->xpath("//category[$cid]/extra");
-	$cCombo = $menu->xpath("//category[$cid]/combo");
-	if (isset($_GET["i"])){
-		if ($_GET["i"] > count($cItems) || $_GET["i"] < 1){
-			if ( ! isset($_SESSION["iid"])){
-				$_SESSION["iid"]=1;
-			}
-			header("Location: category.php?c=".$_SESSION["cid"]."&i=".$_SESSION["iid"]);
-		}
-		$iid = $_GET["i"];
-		$_SESSION["iid"] = $iid;
-		$iItem = $cItems[$iid-1];
-		$iPrices = $iItem->price;
-		if (!count($iPrices)){
-			$iPrices = $cPrices;
-		}
-	}
-	$extras = $menu->xpath("//category[$cid]/extra");
-
+	require_once("common.php");
+	$bgColors = array(
+		"item" => "#E6E6FF",
+		"combo" => "#FFE6E6",
+		"extra" => "#E6FFE6" );
 ?>
 <?php require_once("head.php"); ?>
-<!--category-->
-<div>
-	<fieldset id="category">
-		<legend>Category</legend>
-		<table>
-		<?php
-			$index = 1;
-			foreach ($menu->category as $c){
-		?>
-			<tr>
-				<td>
-					<a href="category.php?c=<?php echo $index;?>">
-						<?php echo $c["name"];?>
-					</a>
-				</td>
-				<td>
-					<?php $cid == $index ? print("---") : print(">>");?>
-				</td>
-			</tr>
-		<?php
-				$index += 1;
-			};
-		?>
-		</table>
-	</fieldset>
-	<!--show items in category-->
-	<fieldset>
-		<legend>
-			<?php echo $menu->xpath("//category[$cid]")[0]["name"];?>
-		</legend>
+<!-----------------------------------------------category -------------------------------------------------------------->
+<fieldset id="category">
+	<legend>Category</legend>
+	<table>
+	<?php
+		$index = 1;
+		foreach ($menu->category as $c){
+	?>
+		<tr>
+			<td>
+				<a href="selector.php?c=<?php echo $index;?>">
+					<?php echo $c["name"];?>
+				</a>
+			</td>
+			<td>
+				<?php $cid == $index ? print("---") : print(">>");?>
+			</td>
+		</tr>
+	<?php
+			$index += 1;
+		};
+	?>
+	</table>
+</fieldset>
+<!-----------------------------------------------item selector-------------------------------------------------------------->
+<fieldset>
+	<legend>
+		<?php echo $menu->xpath("//category[$cid]")[0]["name"];?>
+	</legend>
 <!-------------------------------------show NOTE under category if it has one--------------------------------------------->
-		<?php if (count($cNote)){?>
-		<p class="note"><?php echo "--- $cNote[0] ---";?></p>
-		<?php }?>
+	<?php if ($cNote){?>
+	<p class="note"><?php echo "--- $cNote ---";?></p>
+	<?php }?>
 <!-------------------------------------------display items--------------------------------------------->
-		<div>
-		<?php
-			$index = 1;
-			foreach ($cItems as $i){
-		?>
+	<div>
+	<?php
+		foreach($names as $full=>$short){
+			$index = 0;
+			foreach ($cItems->$full as $i){
+				$index += 1;
+	?>
 
-			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;i=<?php echo $index;?>"
-			<?php if ($i->note) echo 'title="* '.$i->note.'"';?>>
+			<<?php (!$_SESSION["allow"][$short] || isset($_SESSION["select"][$short][$index])) ? print("div") :print("a");?>
+				class="item"
+				style="background-color:<?php echo $bgColors[$full];?><?php if (!$_SESSION["allow"][$short] || isset($_SESSION["select"][$short][$index])) echo ";color:lightgrey";?>"
+				href="selector.php?<?php echo $short."=".$index;?>"
+				<?php if ($i->note) echo 'title="* '.$i->note.'"';?>>
 	<!-------------show tooltip if the item has a note------------------>
 			<?php
 				echo $i["name"];
@@ -96,99 +72,39 @@
 					}
 				?>
 				</div>
-			</a>
-		<?php
-				$index += 1;
-			}
-		?>
-		</div>
-<!-------------------------------------show combo------------------------------------------>
-		<?php if ($cCombo) { ?>
-		<hr />
-			<?php
-				$index = 1;
-				foreach ($cCombo as $c){
-			?>
-			<a class="item" href="category.php?c=<?php echo $cid;?>&amp;o=<?php echo $index;?>">
-				<?php echo $c["name"];?>
-			</a>
-			<?php
-					$index += 1;
-				}
-			}
-		?>
-<!------------------------------show only after selected one item----------------------------------->
-		<?php if (isset($iItem)) { ?>
-		<hr />
-		
-	<!----------------1st row title--------------------->
-		<table>
-			<tr>
-				<th><?php echo $iItem["name"];?></th>
-				<?php if ($iItem->note) { ?>
-				<td class="note"><?php echo ": ".$iItem->note;?></td>
-				<?php } ?>
-			</tr>
-		</table>
-	<!----------------2nd row --------------------->
-		<table>
-			<form action="add2cart.php" method="post">
-				<tr>
-		<!-------------- size  ------------->
-					<?php
-						$index = 1;
-						foreach ($iPrices as $p){
-					?>
-					<td class="choosing">
-						<?php echo $p["name"]; ?>
-						<input type="radio" name="price" value="<?php echo $index; ?>"
-								 <?php $index == 1 ? print("checked") : print(""); ?>
-						/>
-					</td>
-					<?php 
-							$index += 1;
-						}
-					?>
-		<!-------------- extra------------->
-					<?php
-						if ($cExtras){
-							$index = 1;
-							foreach ($cExtras as $e){
-					?>
-					<td class="choosing">
-						<?php echo $e["name"]; ?>
-						<input type="checkbox" name="extra" value="<?php echo $index; ?>" />
-					</td>
-					<?php
-								$index += 1;
-							}
-						}
-					?>
-				</tr>
-			</form>
-	<!----------------3rd row note--------------------->
-
-		</table>
-		<?php } ?>
-	</fieldset>
-</div>
-<pre>
+			</<?php (!$_SESSION["allow"][$short] || isset($_SESSION["select"][$short][$index])) ? print("div") :print("a");?>>
 	<?php
-		echo "session:<br />";
-		print_r($_SESSION);
-		echo "post:<br />";
-		print_r($_POST);
-		echo "get:<br />";
-		print_r($_GET);
-		echo "<br />";
-
-
-		print_r($cNote);
-		if ($iItem["price"]){
-			echo "yes";
-		}else{
-			echo "no";
+			}
 		}
 	?>
-</pre>
+	</div>
+<!------------------------------show selected item----------------------------------->
+	<hr />
+	<div>
+	<?php
+		foreach ($names as $full=>$short){
+			$index = 0;
+			foreach ($cItems->$full as $i){
+				$index += 1;
+				if (! isset($_SESSION["select"][$short][$index])){
+					continue;
+				}
+	?>
+			<a class="item"
+			   style="background-color:<?php echo $bgColors[$full];?>"
+			   href="deselector.php?<?php echo $short."=".$index;?>">
+				<?php echo $i["name"];?>
+			</a>
+	<?php
+			}
+		}
+	?>
+	</div>
+<!-------------show tooltip if the item has a note------------------>
+<?php ?>
+	<div>
+
+	</div>
+<?php ?>
+</fieldset>
 <?php require_once("tail.php"); ?>

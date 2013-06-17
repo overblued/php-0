@@ -1,5 +1,14 @@
 <menu>
-		<category name="Pizzas">
+	<category name="Pizzas">
+		<items>
+			<combo name="2-way Combo" max="2">
+				<price name="Small">7.95</price>
+				<price name="Large">11.80</price>
+			</combo>
+			<combo name="3-way Combo" max="3">
+				<price name="Small">8.90</price>
+				<price name="Large">12.80</price>
+			</combo>
 			<item name="Pepperoni">
 				<price name="Small">6.85</price>
 				<price name="Large">10.85</price>
@@ -68,16 +77,6 @@
 				<price name="Small">5.50</price>
 				<price name="Large">9.75</price>
 			</item>
-			<combo name="2-way Combo">
-				<max>2</max>
-				<price name="Small">7.95</price>
-				<price name="Large">11.80</price>
-			</combo>
-			<combo name="3-way Combo">
-				<max>3</max>
-				<price name="Small">8.90</price>
-				<price name="Large">12.80</price>
-			</combo>
 			<extra name="Extra Cheese">
 				<price name="Small">1.25</price>
 				<price name="Large">1.85</price>
@@ -86,10 +85,12 @@
 				<price name="Small">1.25</price>
 				<price name="Large">1.85</price>
 			</extra>
-		</category>
-		<category name="Speciality Pizzas">
-			<price name="Small">9.80</price>
-			<price name="Large">15.80</price>
+		</items>
+	</category>
+	<category name="Speciality Pizzas">
+		<price name="Small">9.80</price>
+		<price name="Large">15.80</price>
+		<items>
 			<item name="Three Aces Special"></item>
 			<item name="Mediterranean">
 				<note>Sliced Tomatoes, Olives, Spinach, Fresh Garlic, Mozzarella &amp; Feta Cheese</note>
@@ -106,10 +107,12 @@
 			<item name="Grecian Supreme">
 				<note>Grilled Chicken, Feta Cheese, Tomatoes &amp; Kalamata Olives</note>
 			</item>
-		</category>
-		<category name="Special Dinnerrs">
-			<note>All Dinners served with French Fries and Salad</note>
-			<price>7.25</price>
+		</items>
+	</category>
+	<category name="Special Dinnerrs">
+		<note>All Dinners served with French Fries and Salad</note>
+		<price>7.25</price>
+		<items>
 			<item name="Chicken Wing Dinner">
 				<price name="Normal">7.25</price>
 			</item>
@@ -139,26 +142,45 @@
 				<note>With tartar sauce</note>
 				<price name="Normal">7.35</price>
 			</item>
-		</category>
-		<category name="Side Orders">
-			<price name="Small">9.80</price>
-			<price name="Large">15.80</price>
-		</category>
-		<category name="Salads">
-			<price name="Small">9.80</price>
-			<price name="Large">15.80</price>
-		</category>
-		<category name="Pasta">
-			<price>7.25</price>
-		</category>
-		<category name="Homemade Calzones">
-			<price>7.35</price>
-		</category>
-		<category name="Wraps $4.95">
-			<price>4.95</price>
-		</category>
-		<category name="Grinders">
-			<price name="Small">4.75</price>
-			<price name="Large">5.75</price>
-		</category>
-	</menu>
+		</items>
+	</category>
+	<category name="Side Orders">
+		<price name="Small">9.80</price>
+		<price name="Large">15.80</price>
+		<items>
+
+		</items>
+	</category>
+	<category name="Salads">
+		<price name="Small">9.80</price>
+		<price name="Large">15.80</price>
+		<items>
+
+		</items>
+	</category>
+	<category name="Pasta">
+		<price name="Normal">7.25</price>
+		<items>
+
+		</items>
+	</category>
+	<category name="Homemade Calzones">
+		<price name="Normal">7.35</price>
+		<items>
+
+		</items>
+	</category>
+	<category name="Wraps $4.95">
+		<price name="Normal">4.95</price>
+		<items>
+
+		</items>
+	</category>
+	<category name="Grinders">
+		<price name="Small">4.75</price>
+		<price name="Large">5.75</price>
+		<items>
+
+		</items>
+	</category>
+</menu>

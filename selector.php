@@ -1,58 +1,60 @@
 <?php
 // this handles the logic while selecting
-	session_start();
-	$menu = new SimpleXMLElement(file_get_contents("menu.xml"));
-
-	$cid = $_SESSION["cid"];
-	$category = $menu->xpath("//category[$cid]")[0];
-
-	if (! isset($_SESSION["select"])){
-		$_SESSION["select"] = array(
-			"i" => array (),
-			"e" => array (),
-			"p" => array (),
-			"o" => array (),
-		);
+	require_once("common.php");
+	
+	if (!isset($_SESSION["cid"]) || (isset($_GET["c"]) && $_GET["c"] != $_SESSION["cid"])){
+		require_once("reset.php");
 	}
-	if (! isset($_SESSION["allow"])){
-		$_SESSION["allow"] = array(
-			"i" => 1,
-			"p" => 1,
-			"o" => 1,
-			"e" => 1,
-		);
+	if (isset($_GET["c"])){
+		if ($_GET["c"] > $menu->category->count() || $_GET["c"] < 1) {
+			goBack();
+		}
+		$_SESSION["cid"] = $_GET["c"];
+		goBack();
 	}
-	$names = array("i", "e", "p", "o");
-	$max = array(
-		"i" => count($category->item),
-		"e" => count($category->extra),
-		"p" => count($category->item->price),
-		"o" => count($category->combo)
-	);
+
+	if (! isset($_GET)){
+		goBack();
+	}
+
 	foreach ($names as $n){
 		if (isset($_GET[$n])){
-			if ($_GET[$n] > $max[$n] || $_GET[$n] < 1 || ! $_SESSION["allow"][$n]){
-				header("Location: category.php?c=".$cid);
+			if ($_GET[$n] > $max[$n] || $_GET[$n] < 1){
+				goBack();
 			}
-			$_SESSION["select"][$n][$_GET[$n]] = 1;
+			if ($n == "i" && $_SESSION["combo"] == 1){
+				$_SESSION["select"]["i"] = array();
+			}
+			if ($_SESSION["allow"][$n]){
+				$_SESSION["select"][$n][$_GET[$n]] = 1;
+			}else{
+				goBack();
+			}
 			switch ($n) {
 				case "i":
-					if (! $_SESSION["allow"]["o"] ||
-							(count($_SESSION["select"]["i"]) >=  $category->combo[$_SESSION["select"]["o"][0]-1]->max)){
+					if (! $_SESSION["allow"]["o"] && count($_SESSION["select"]["i"]) >= $_SESSION["combo"]){
 						$_SESSION["allow"]["i"] = 0;
 					}
 					break;
-				case "p":
-					$_SESSION["allow"]["p"] = 0;
-					break;
 				case "o":
+					$_SESSION["combo"] = (int)$cItems->combo[$_GET[$n]-1]["max"];
 					$_SESSION["allow"]["o"] = 0;
 					$_SESSION["allow"]["i"] = 1;
+					break;
+				case "p":
+					$_SESSION["allow"]["p"] = 0;
 					break;
 				default:
 					break;
 			}
 		}
 	}
+	goBack();
+?>
 
+<?php
+	function goBack(){
+		header("Location: category.php");
+		exit();
+	}
 ?>
