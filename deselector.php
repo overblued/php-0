@@ -3,38 +3,28 @@
 	if (! isset($_GET)){
 		goBack();
 	}
-	foreach ($names as $n){
+	foreach ($NAMES as $n){
 		if (isset($_GET[$n])){
 			if ($_GET[$n] > $max[$n] || $_GET[$n] < 1){
 				goBack();
 			}
-			unset($_SESSION["select"][$n][$_GET[$n]]);
+			unset($s[$n][$_GET[$n]]);
 			switch ($n) {
-					case "i":
-						if (! $_SESSION["allow"]["o"] ){
-							$_SESSION["allow"]["i"] = 1;
+					case "item":
+						break;
+					case "combo":
+						$cb = 1;
+						if (count($s["item"]) > 1){
+							purge($s["item"],1);
 						}
 						break;
-					case "o":
-						$_SESSION["combo"] = 1;
-						$_SESSION["allow"]["o"] = 1;
-						$_SESSION["allow"]["i"] = 1;
-						$_SESSION["select"]["i"] = array();
-						break;
-					case "p":
-						$_SESSION["allow"]["p"] = 1;
+					case "price":
 						break;
 					default:
 						break;
 			}
-			header("Location: category.php");
 		}
 	}
-?>
-
-<?php
-	function goBack(){
-		header("Location: category.php");
-		exit();
-	}
+	require_once("getPrice.php");
+	goBack();
 ?>

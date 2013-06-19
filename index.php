@@ -1,5 +1,4 @@
 <?php
-	session_start();
+	header("Location: selector.php");
 ?>
-<?php require_once("head.php"); ?>
-<?php require_once("tail.php"); ?>
+

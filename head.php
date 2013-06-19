@@ -3,11 +3,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="main.css" />
-        <title>Three Aces Pizza</title>
+        <title>The Pizza Shop</title>
     </head>
     <body>
 		<header>
-			<h1>Three Aces</h1>
+			<h1>The Pizza Shop</h1>
 			<nav>
 				<a href="selector.php">MENU</a> |
 				<a href="cart.php">SHOPPING CART</a> |
