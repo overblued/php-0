@@ -9,8 +9,9 @@
 		<header>
 			<h1>The Pizza Shop</h1>
 			<nav>
-				<a href="selector.php">MENU</a> |
-				<a href="cart.php">SHOPPING CART</a> |
-				<a href="index.php">CONTACT US</a>
+				<a href="/p/0/">MENU</a> |
+				<a href="cart">SHOPPING CART</a> |
+				<a href="/p/0/">CONTACT US</a>
 			</nav>
 		</header>
+		<div id="main">

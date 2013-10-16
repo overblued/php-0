@@ -124,43 +124,43 @@
 		<note>All Dinners served with French Fries and Salad</note>
 		<items>
 			<item name="Chicken Wing Dinner">
-				<price>7.25</price>
+				<price size="Default">7.25</price>
 			</item>
 			<item name="Gyro Plate">
-				<price>7.25</price>
+				<price size="Default">7.25</price>
 			</item>
 			<item name="Chicken Finger Plate">
-				<price>7.25</price>
+				<price size="Default">7.25</price>
 			</item>
 			<item name="3 Piece Chicken Dinner">
-				<price>7.25</price>
+				<price size="Default">7.25</price>
 			</item>
 			<item name="Cheeseburger or Chicken Burger Plate">
-				<price>5.25</price>
+				<price size="Default">5.25</price>
 			</item>
 			<item name="Double-cheeseburger Plate">
-				<price>5.75</price>
+				<price size="Default">5.75</price>
 			</item>
 			<item name="Chicken Kabob Plate">
 				<note>With rice &amp; pita bread</note>
-				<price>7.85</price>
+				<price size="Default">7.85</price>
 			</item>
 			<item name="Steak Tips Dinner">
-				<price>8.25</price>
+				<price size="Default">8.25</price>
 			</item>
 			<item name="Fish &amp; Chips Dinner">
 				<note>With tartar sauce</note>
-				<price>7.35</price>
+				<price size="Default">7.35</price>
 			</item>
 		</items>
 	</category>
 	<category name="Side Orders">
 		<items>
 			<item name="Mozzarella Sticks 7 Pieces">
-				<price>4.50</price>
+				<price size="Default">4.50</price>
 			</item>
 			<item name="Buffalo Fingers">
-				<price>5.70</price>
+				<price size="Default">5.70</price>
 			</item>
 			<item name="French Fries">
 				<price size="Small">2.25</price>

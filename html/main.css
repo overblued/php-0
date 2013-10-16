@@ -1,0 +1,77 @@
+
+html {font-family:arial,sans-serif;background-color: #fafaff}
+
+a {
+	color: blue;
+	font-family:Verdana,arial,sans-serif;
+	outline-color:lightseagreen;
+	text-decoration: none;
+}
+a:hover {color:lightseagreen;}
+fieldset {
+	border:2px solid lightgrey;
+	padding:0.5em;
+	margin:0.3em;
+	text-align: left;
+}
+form {display:inline;}
+header {text-align: center;}
+p {margin:0;padding:0}
+table {text-align: center}
+h1 {font-family:Cambria,serif;}
+hr {
+	height:1px;
+	background-color:lightgrey;
+	margin: 0.3em 0;
+	border:none;
+}
+input[type="number"]{
+	background-color:#EEE;
+    border:1px solid #DDD;
+	width:3em;
+	font-size: 1.05em;
+	text-align: center;
+}
+legend {font-family:Georgia,serif;}
+/*diffenrent text style*/
+.note {font-size: 0.8em;text-align: center;}
+.prices {color: grey; font-size: 0.8em;}
+/*variation of <a>*/
+.items {
+	background:#F0F0FF;
+	border:1px solid #DDD;
+	color: black;
+	margin:0.3em 0.3em;
+	/*float:left;*/
+	display:inline-block;
+	font-size:0.9em;
+	padding:0.2em 0.4em;
+	text-align: center;
+}
+.item {background:#DDF;}
+.combo {background:#FDF;}
+.extra {background:#DFF;}
+.price {
+	background:#FFD;
+	font-size:1em;
+	font-weight: bold;
+}
+.fade {
+	background:#EEE;
+	border-color: #EEE;
+	color:#BBB;
+}
+.fade:hover {color:#BBB;}
+.bold {font-weight: bold;}
+.bold:hover {color:blue;}
+
+#category {float:left;}
+#cart {display:inline;}
+#showcase {}
+#choices {text-align: center;}
+#main {
+	margin:0 auto;
+	width:90%;
+	overflow: hidden;
+	text-align: center;
+}
